@@ -16,25 +16,19 @@ def parse(text):
 Sum 'Frequencies' to get total.
 """
 def myParse(text):
-    nums = []
     sum = 0
     for line in text:
-        val = int(line[1:])
-        if '+' not in line:
-            val = val * -1
-        nums.append(val)
+        val = int(line)
         sum += val
 
-    return (nums, sum)
+    return sum
 
 """
 Get the first duplicate 'frequency'
 """
 def myParse2(text, numDict, sum):
     for line in text:
-        val = int(line[1:])
-        if '+' not in line:
-            val = val * -1
+        val = int(line)
         sum += val
         if sum in numDict:
             #Found it.  Lets go home!
@@ -61,7 +55,7 @@ Samples.
 -1, -2, -3 results in -6
 """
 
-(numList,freqSum)  = myParse(Input(1).readlines())
+freqSum  = myParse(Input(1).readlines())
 
 numDict = {}
 numDict[0] = 1
