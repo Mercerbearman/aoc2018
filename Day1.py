@@ -1,7 +1,7 @@
 #Day 1.  Simple counting of frequencies.
 #%%
 #Import helper files
-from norvigHelper import *
+from norvigHelper import Input, re
 #import re
 
 def parse(text):
