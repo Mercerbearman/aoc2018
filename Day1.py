@@ -4,9 +4,6 @@
 from norvigHelper import *
 #import re
 
-P = 0
-M = 1
-
 def parse(text):
     "Return a list of (turn, distance) pairs from text of form 'R2, L42, ...'"
     turns = dict(P='+', M='-')
@@ -15,8 +12,10 @@ def parse(text):
            for (PM, d) in re.findall(r'(-|\+)(\d+)', text)]
 
 
+"""
+Sum 'Frequencies' to get total.
+"""
 def myParse(text):
-    "Return a list of numbers from the file."
     nums = []
     sum = 0
     for line in text:
@@ -28,20 +27,23 @@ def myParse(text):
 
     return (nums, sum)
 
+"""
+Get the first duplicate 'frequency'
+"""
 def myParse2(text, numDict, sum):
-    "Returns the first frequency that is listed twice"
-
     for line in text:
-        bob = line[1:]
-        val = int(bob)
+        val = int(line[1:])
         if '+' not in line:
             val = val * -1
         sum += val
-        if int(sum) in numDict:
+        if sum in numDict:
+            #Found it.  Lets go home!
             return (False, sum, numDict)
         else:
+            #First time seen, add to dict.
             numDict[sum] = 1
     
+    # Didn't find the duplicate yet, let them know to keep searching.
     return(True, sum, numDict)
 
 """
@@ -67,6 +69,7 @@ dupFreq = 0
 notFound = True
 
 while (notFound):
-    (notFound, dupFreq, numDict) = myParse2(Input(1).readlines(), numDict, dupFreq)
+    (notFound, dupFreq, numDict) = \
+    myParse2(Input(1).readlines(), numDict, dupFreq)
 print('Frequency Sum for Part 1:' + str(freqSum))
 print('First duplicate Freq: ' + str(dupFreq))
