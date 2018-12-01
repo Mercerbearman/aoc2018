@@ -1,16 +1,8 @@
 #Day 1.  Simple counting of frequencies.
 #%%
 #Import helper files
-from norvigHelper import Input, re
-#import re
-
-def parse(text):
-    "Return a list of (turn, distance) pairs from text of form 'R2, L42, ...'"
-    turns = dict(P='+', M='-')
-    return [(turns[PM], int(d))
-            # Search for '+' or '-' followed by a number.
-           for (PM, d) in re.findall(r'(-|\+)(\d+)', text)]
-
+#from norvigHelper import Input, re
+from Utils import Input, printHelper, re
 
 """
 Sum 'Frequencies' to get total.
@@ -65,5 +57,7 @@ notFound = True
 while (notFound):
     (notFound, dupFreq, numDict) = \
     myParse2(Input(1).readlines(), numDict, dupFreq)
-print('Frequency Sum for Part 1:' + str(freqSum))
-print('First duplicate Freq: ' + str(dupFreq))
+
+#print('Day1a: {}'.format(str(freqSum)))
+printHelper(freqSum, 'Day1a:')
+printHelper(dupFreq, 'Day1b:')
