@@ -29,7 +29,7 @@ def getCharCounts(line):
 
     """Now lets get the times 2 is in the list and 3 or more"""
     for _,v in charCount.items():
-        if v >= 3:
+        if v == 3:
             hasAtLeast3 = 1
         if v == 2:
             hasAtLeast2 = 1
@@ -40,9 +40,7 @@ def getCharCounts(line):
 
 
 def Parse(text):
-    occurrences = {}
-    occurrences[2] = 0
-    occurrences[3] = 0
+    occurrences = {2:0, 3:0}
     for line in text:
         (two, three) = getCharCounts(line)
         occurrences[2] = occurrences[2] + two
