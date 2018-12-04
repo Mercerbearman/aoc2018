@@ -34,9 +34,6 @@ def createGrid(patchList, row, col):
 
     return (grid, ids, overlappedElves)
 
-def findOverlaps(grid):
-    return Counter(grid)
-
 patchList = Parse(Input(3).read())
 
 # Lets find the size of the matrix.
