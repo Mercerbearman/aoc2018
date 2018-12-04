@@ -16,6 +16,7 @@ def Parse(text):
 def createGrid(patchList, row, col):
     grid = [[0 for x in range(col)] for y in range(row)] 
     ids = set()
+    overlappedElves = set()
     for elf in patchList:
         row = elf[1]
         col = elf[2]
@@ -26,11 +27,12 @@ def createGrid(patchList, row, col):
                     grid[rowRange][colRange] = elf[0]
                     ids.add(elf[0])
                 else:
-                    ids.remove(data)
+                    #We have a conflict, handle it.
+                    overlappedElves.add(data)
+                    overlappedElves.add(elf[0])
                     grid[rowRange][colRange] = -1
-                    ids.remove(elf[0])
-                    
-    return (grid, ids)
+
+    return (grid, ids, overlappedElves)
 
 def findOverlaps(grid):
     return Counter(grid)
@@ -45,17 +47,16 @@ for elf in patchList:
 maxRow = max(patchProfile, key=lambda item:item[1])
 maxCol = max(patchProfile, key=lambda item:item[2])
 
-print("Max rows: {}".format(maxRow))
-print("Max columns: {}".format(maxCol))
+#print("Max rows: {}".format(maxRow))
+#print("Max columns: {}".format(maxCol))
 
-
-(grid, overlappedElfs) = createGrid(patchList, maxRow[1], maxCol[2])
+(grid, elfIds, overlappedElfs) = createGrid(patchList, maxRow[1], maxCol[2])
 count = 0
 for item in grid:
     count += item.count(-1)
 
-elfs = set(patchList[0])
+#Grab the only id that isn't overlapped, aka difference between the two lists.
+ans = elfIds.difference(overlappedElfs)
 
-solo = elfs.difference(overlappedElfs)
-
-print('Dat2b: {}'.format(count))
+print('Dat3a: {}'.format(count))
+print('Day3b: {}'.format(ans))
