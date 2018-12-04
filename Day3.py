@@ -18,8 +18,6 @@ def createGrid(patchList, row, col):
     ids = set()
     overlappedElves = set()
     for elf in patchList:
-        row = elf[1]
-        col = elf[2]
         for rowRange in range(elf[1], elf[1] + elf[3]):
             for colRange in range(elf[2], elf[2] + elf[4]):
                 data = grid[rowRange][colRange]
@@ -41,13 +39,13 @@ patchProfile = []
 for elf in patchList:
     patchProfile.append((elf[0], elf[1] + elf[3], elf[2] + elf[4]))
 
+# Helpful way to find the max of the list of tuples (per column)
 maxRow = max(patchProfile, key=lambda item:item[1])
 maxCol = max(patchProfile, key=lambda item:item[2])
 
-#print("Max rows: {}".format(maxRow))
-#print("Max columns: {}".format(maxCol))
-
 (grid, elfIds, overlappedElfs) = createGrid(patchList, maxRow[1], maxCol[2])
+
+# THere has to be a better way here.  find all -1 values in my matrix (multiple assigned)
 count = 0
 for item in grid:
     count += item.count(-1)
