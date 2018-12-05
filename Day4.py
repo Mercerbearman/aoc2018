@@ -2,14 +2,6 @@
 from Utils import Input, printHelper, re
 import numpy as np
 
-def Parse(text):
-    "Return a list of elf patch coords."
-    "text will be #1 @ 1,3: 4x4"
-    return [(int(id), int(rowOff), int(colOff), int(rowCount), int(colCount))
-           for (id, rowOff, colOff, rowCount, colCount)
-                in re.findall(r'#(\d+) @ (\d+),(\d+): (\d+)x(\d+)', text)]
-
-
 def Parse1(text):
     current_Guard = 0
     days = []
