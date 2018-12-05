@@ -46,11 +46,12 @@ def Parse2(sleepSchedule):
             currentDay = item[0]
             startedSleeping = 0
         # Case to handle falling asleep.
-        if isSleeping == False and item[2] == True:
+        if isSleeping == False and item[2] == 1:
             isSleeping = True
             startedSleeping = item[4]
         # Woke up, lets count minutes.
-        if isSleeping == True and item[2] == False:
+        if isSleeping == True and item[2] == 0:
+            isSleeping = False
             #Transitioned from sleep to awake.
             for x in range (startedSleeping, item[4]):
                 shift[item[1]][x] += 1
@@ -70,7 +71,6 @@ guardthatSleepsAlot = 0
 
 for k,v in sleeping.items():
     locCount = sum(v)
-    print(k, locCount)
     if locCount > guardSleepyMins:
         guardthatSleepsAlot = k
         guardSleepyMins = locCount
@@ -84,3 +84,21 @@ print ('Guard: {} - Most Min: {}'.format(guardthatSleepsAlot, max_index))
 ans = int(max_index) * int(guardthatSleepsAlot)
 
 print('Dat4a: {}'.format(ans))
+
+#Now get the minute that a guard is asleep the most.
+maxMin = 0
+maxGuardMin = 0
+for k,v in sleeping.items():
+    locMax = max(v)
+    if locMax > maxMin:
+        maxGuardMin = k
+        maxMin = locMax
+
+#Now that we have the guard who is alseep the most... lets find his 
+# sleepy minute.
+max_index = sleeping[maxGuardMin].index(maxMin)
+
+print ('Guard2: {} - Most Min2: {}'.format(maxGuardMin, max_index))
+ans2 = int(max_index) * int(maxGuardMin)
+
+print('Dat4b: {}'.format(ans2))
