@@ -5,6 +5,7 @@
 from Utils import Input, printHelper, re
 import numpy as np
 from collections import Counter
+import time
 
 def Parse(text):
     "Return a list of elf patch coords."
@@ -14,6 +15,7 @@ def Parse(text):
                 in re.findall(r'#(\d+) @ (\d+),(\d+): (\d+)x(\d+)', text)]
 
 def createGrid(patchList, row, col):
+    cgStart = time.perf_counter()
     grid = [[0 for x in range(col)] for y in range(row)] 
     ids = set()
     overlappedElves = set()
@@ -29,8 +31,14 @@ def createGrid(patchList, row, col):
                     overlappedElves.add(data)
                     overlappedElves.add(elf[0])
                     grid[rowRange][colRange] = -1
-
+    cgend = time.perf_counter()
+    print('Time for create grid is: {}'.format(cgend - cgStart))
     return (grid, ids, overlappedElves)
+
+def createGrid2(patchList):
+
+
+start = time.perf_counter()
 
 patchList = Parse(Input(3).read())
 
@@ -53,5 +61,8 @@ for item in grid:
 #Grab the only id that isn't overlapped, aka difference between the two lists.
 ans = elfIds.difference(overlappedElfs)
 
+end = time.perf_counter()
+
 print('Dat3a: {}'.format(count))
 print('Day3b: {}'.format(ans))
+print('Day3 Time: {} seconds'.format(end - start))
