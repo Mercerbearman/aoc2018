@@ -81,12 +81,10 @@ def assignWorker(state, activeWorkers, totalTime, stateComplete, sequence):
     stateComplete.remove(state)
     sequence.append([state, totalTime + getTimeforState(state)])
     activeWorkers += 1
-    print('assiging worker to {}'.format(state))
     return (stateComplete, sequence, activeWorkers)
 
 def updateTimeByWorkerwithLeastTimeLeft(totalTime, sequence):
     minTime = 0
-    print('In Total Time method: {}'.format(totalTime))
     for item in sequence:
         tempTime = item[1] - totalTime
         if (tempTime > 0):
@@ -95,15 +93,12 @@ def updateTimeByWorkerwithLeastTimeLeft(totalTime, sequence):
             elif (tempTime < minTime):
                 minTime = tempTime
     totalTime += minTime
-    print('In Total Time method: {}'.format(totalTime))
     return totalTime
 
 def checkForWorkerComplete(sequence, totalTime):
     stateJustFinished = []
     for item in sequence:
-        print(item)
         if item[1] == totalTime:
-            print(totalTime, item[1])
             stateJustFinished.append(item[0])
     
     return stateJustFinished
@@ -112,25 +107,19 @@ def checkForWorkerComplete(sequence, totalTime):
 def advanceState2(instructions, stateComplete, sequence, totalTime, activeWorkers):
     sjf = checkForWorkerComplete(sequence, totalTime)
     for item in sjf:
-        activeWorkers -= 1
-        # Only append our state to the stateComplete it isn't there already.
-        # This helps with the initial states.
-        if (item not in stateComplete):
-            stateComplete.append(item)
-    stateComplete.sort()
-
-    #If we have room to work, and states Ready to be worked, lets work them.
-    state = stateComplete[0]
-    # We can assign a new worker, so lets do that now.
-    if (activeWorkers < 5):
-        print(activeWorkers)
-        # We can assign someone to work it.
-        if stateComplete:
-            (stateComplete, sequence, activeWorkers) = assignWorker(state, activeWorkers, totalTime, stateComplete, sequence)
-            (completeStates, instructions) = updateState(state, instructions)
+        if not item in stateComplete:
+            if item not in masterCompleted:
+                activeWorkers -= 1
+                masterCompleted.add(item)
+            (completeStates, instructions) = updateState(item, instructions)
             for item in completeStates:
                 stateComplete.append(item)
-                stateComplete.sort()
+            stateComplete.sort()
+    # We can assign a new worker, so lets do that now.
+    if (activeWorkers < 5):
+        # We can assign someone to work it.
+        if stateComplete:
+            (stateComplete, sequence, activeWorkers) = assignWorker(stateComplete[0], activeWorkers, totalTime, stateComplete, sequence)
         # No more states to work, need to update totalTime
         else:
             totalTime = updateTimeByWorkerwithLeastTimeLeft(totalTime, sequence)
@@ -142,6 +131,7 @@ def advanceState2(instructions, stateComplete, sequence, totalTime, activeWorker
 
 stateComplete2 = []
 sequence2 = []
+masterCompleted = set()
 totalTime = 0
 activeWorkers = 0
 (instructions2, allChars2) = Parse(Input(7).readlines())
@@ -150,5 +140,7 @@ for item in allChars2:
     if item not in instructions2:
         stateComplete2.append(item)
 
-while (len(stateComplete2)):
+while (len(sequence2) < 26):
     (instructions2, stateComplete2, sequence2, totalTime, activeWorkers) = advanceState2(instructions2, stateComplete2, sequence2, totalTime, activeWorkers)
+
+print('Day7b: {}'.format(totalTime + getTimeforState('Q')))
